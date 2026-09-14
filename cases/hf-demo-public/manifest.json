@@ -1,0 +1,32 @@
+{
+  "case_id": "hf-demo-public",
+  "version": "0.1-public-excerpts-draft",
+  "case_nature": "reported_real_incident",
+  "scope": "仅限随包短引文：事件性质、披露范围、最初评估状态、独立调查边界和意图不确定性。",
+  "as_of": "2026-09-14T02:31:27.460900+00:00",
+  "human_review": {
+    "status": "pending",
+    "reviewer": "",
+    "notes": "请用户逐条审核；不得称为已审核案例。"
+  },
+  "source_ids": [
+    "HF_DISCLOSURE",
+    "HF_TIMELINE",
+    "OPENAI_REVIEW",
+    "METR_REVIEW"
+  ],
+  "allowed_topics": [
+    "event classification",
+    "customer content scope",
+    "disclosure timing",
+    "investigation limits",
+    "intent uncertainty"
+  ],
+  "excluded_topics": [
+    "all incidents",
+    "private logs",
+    "current customer status",
+    "arbitrary unrelated questions"
+  ],
+  "provenance": "Exact short excerpts from captured tool text; original SHA256/offsets retained in ledger evidence. Not full pages."
+}

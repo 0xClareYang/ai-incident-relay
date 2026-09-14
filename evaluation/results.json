@@ -1,0 +1,11 @@
+{
+  "status": "not_run",
+  "reason": "测试题尚未人工审核，未启动 A/B。独立桌面功能验收已通过，但不是效果对照；CLI 路径存在模型版本兼容问题。",
+  "ab_comparison_completed": false,
+  "accuracy_improvement": null,
+  "cost": null,
+  "observations": [
+    "程序测试及示例运行不等于 A/B 效果证据。",
+    "未填写任何虚构人工评分、模型输出或成本。"
+  ]
+}

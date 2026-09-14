@@ -1,0 +1,3 @@
+* text=auto eol=lf
+# Evidence hashes and offsets must survive every platform's Git settings.
+cases/**/snapshots/* -text

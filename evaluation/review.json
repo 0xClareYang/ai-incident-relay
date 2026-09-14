@@ -1,0 +1,7 @@
+{
+  "status": "pending",
+  "reviewer": "",
+  "reviewed_at": null,
+  "notes": "人工审核测试题、原始材料与评分规则后再冻结运行。Q5–Q7 是显式标注的合成测试材料，不是第二个真实事件专题。",
+  "scores_completed": false
+}

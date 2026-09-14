@@ -1,0 +1,445 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "1.0"
+      ]
+    },
+    "run": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "live",
+            "replay"
+          ]
+        },
+        "input": {
+          "type": "string"
+        },
+        "started_at": {
+          "type": "string"
+        },
+        "as_of": {
+          "type": "string"
+        },
+        "case_nature": {
+          "type": "string",
+          "enum": [
+            "reported_real_incident",
+            "hypothetical",
+            "exercise",
+            "unverified"
+          ]
+        },
+        "scope": {
+          "type": "string"
+        },
+        "scope_match": {
+          "type": "string",
+          "enum": [
+            "within",
+            "partial",
+            "outside"
+          ]
+        },
+        "human_review": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "passed",
+                "failed"
+              ]
+            },
+            "reviewer": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "reviewer",
+            "notes"
+          ]
+        },
+        "semantic_review": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "passed",
+                "failed"
+              ]
+            },
+            "reviewer": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "reviewer",
+            "notes"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "model": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode",
+        "input",
+        "started_at",
+        "as_of",
+        "case_nature",
+        "scope",
+        "scope_match",
+        "human_review",
+        "semantic_review",
+        "limitations",
+        "model"
+      ]
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "entities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "time": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scope": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "contradicted",
+              "disputed",
+              "insufficient_evidence",
+              "inference"
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reason": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "statement_attribution": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "correction": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "none_known",
+                  "updated",
+                  "corrected",
+                  "unverified"
+                ]
+              },
+              "source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "source_ids",
+              "notes"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "text",
+          "entities",
+          "time",
+          "scope",
+          "status",
+          "evidence_ids",
+          "reason",
+          "limitations",
+          "statement_attribution",
+          "correction"
+        ]
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "published_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "updated_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "event_time": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "retrieved_at": {
+            "type": "string"
+          },
+          "time_notes": {
+            "type": "string"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "primary_disclosure",
+              "technical_report",
+              "independent_investigation",
+              "republication",
+              "public_record",
+              "test_fixture"
+            ]
+          },
+          "source_chain_id": {
+            "type": "string"
+          },
+          "derived_from": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "relationship": {
+            "type": "string"
+          },
+          "interests": {
+            "type": "string"
+          },
+          "access_status": {
+            "type": "string",
+            "enum": [
+              "read",
+              "partial",
+              "failed",
+              "restricted"
+            ]
+          },
+          "read_scope": {
+            "type": "string"
+          },
+          "snapshot": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string"
+              },
+              "extractor": {
+                "type": "string"
+              },
+              "raw_path": {
+                "type": "string"
+              },
+              "raw_sha256": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "sha256",
+              "extractor"
+            ]
+          }
+        },
+        "required": [
+          "source_id",
+          "title",
+          "url",
+          "publisher",
+          "published_at",
+          "updated_at",
+          "event_time",
+          "retrieved_at",
+          "time_notes",
+          "source_type",
+          "source_chain_id",
+          "derived_from",
+          "relationship",
+          "interests",
+          "access_status",
+          "read_scope",
+          "snapshot"
+        ]
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "evidence_id": {
+            "type": "string"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "source_id": {
+            "type": "string"
+          },
+          "quote": {
+            "type": "string"
+          },
+          "locator": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ]
+          },
+          "relation": {
+            "type": "string",
+            "enum": [
+              "supports",
+              "contradicts",
+              "context"
+            ]
+          },
+          "extent": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "claim_id",
+          "source_id",
+          "quote",
+          "locator",
+          "relation",
+          "extent"
+        ]
+      }
+    },
+    "answer_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "text",
+          "claim_ids",
+          "evidence_ids"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "run",
+    "claims",
+    "sources",
+    "evidence",
+    "answer_items"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Incident Relay ledger 1.0"
+}

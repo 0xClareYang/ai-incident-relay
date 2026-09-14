@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+runs/
+cases/*/snapshots/
+!cases/hf-demo-public/snapshots/
+!cases/hf-demo-public/snapshots/*.txt
+cases/hf-2026/
+evaluation/private/
+.DS_Store
+.venv/
+.env
+.env.*
+*.pem
+*.key
+# Local capture/session preparation scripts depend on private run artifacts.
+build_case.py
+build_live_demo.py
+refine_smoke_report.py
+verify_delivery.py
+discovery_probe.py
+session_probe.py
+prepare_public_case.py
+README.local.md
+release_check.py
