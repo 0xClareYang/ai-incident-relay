@@ -333,9 +333,17 @@ def validate(data, base):
                     'snapshot':(dict,type(None))}, sid)
         if s.get('access_status') not in ('read','partial','failed','restricted'):
             fail(sid + ': invalid access status')
+        if not isinstance(s.get('source_chain_id'), str) or not s['source_chain_id'].strip():
+            fail(sid + ': invalid source chain ID')
+        if s.get('source_type') == 'republication' and not s.get('derived_from'):
+            fail(sid + ': republication requires a parent source')
         for parent in s.get('derived_from', []):
             if not isinstance(parent, str) or parent not in maps['sources']:
                 fail(sid + ': unknown parent source')
+            elif parent == sid:
+                fail(sid + ': source cannot derive from itself')
+            elif s.get('source_chain_id') != maps['sources'][parent].get('source_chain_id'):
+                fail(sid + ': derived source must keep the parent source chain')
         snap = s.get('snapshot')
         if s.get('access_status') in ('read','partial'):
             if not isinstance(snap, dict):
@@ -427,6 +435,25 @@ def validate(data, base):
     return errors
 
 
+def source_chain_summary(data, claim_id):
+    """Count cited documents and declared provenance chains for one claim.
+
+    This reports ledger metadata; it does not infer whether publishers are truly
+    independent or whether the metadata is complete.
+    """
+    sources = {s['source_id']: s for s in data['sources']}
+    source_ids = []
+    for evidence in data['evidence']:
+        if evidence['claim_id'] == claim_id and evidence['source_id'] not in source_ids:
+            source_ids.append(evidence['source_id'])
+    chain_ids = []
+    for source_id in source_ids:
+        chain_id = sources[source_id]['source_chain_id']
+        if chain_id not in chain_ids:
+            chain_ids.append(chain_id)
+    return {'source_ids': source_ids, 'source_chain_ids': chain_ids}
+
+
 def quote_record(base, source, claim_id, evidence_id, start, end, relation, extent):
     text = contained(base, source['snapshot']['path']).read_bytes().decode('utf-8')
     if not 0 <= start < end <= len(text):
@@ -454,9 +481,13 @@ def render(data):
         lines.extend([md(item['text']) + ' ' + ' '.join(links), ''])
     lines += ['## 主张与判断', '']
     for c in data['claims']:
+        chain_summary = source_chain_summary(data, c['claim_id'])
         lines += ['### ' + c['claim_id'], '', md(c['text']), '',
                   '**' + c['status'] + '** — ' + md(c['reason']), '',
                   '归属：' + md(c['statement_attribution'] or '未归属机构声明'), '',
+                  '证据计数：来源文档 ' + str(len(chain_summary['source_ids'])) +
+                  '；声明的来源链 ' + str(len(chain_summary['source_chain_ids'])) +
+                  '。同一来源链中的转载或派生材料不构成额外独立确认。', '',
                   '限制：' + md('；'.join(c['limitations']) or '无另列限制'), '',
                   '更正记录：' + md(json.dumps(c['correction'], ensure_ascii=False)), '']
     lines += ['## 证据', '']

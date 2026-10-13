@@ -117,6 +117,32 @@ class LedgerTests(unittest.TestCase):
     def test_unknown_parent(self):
         self.data['sources'][0]['derived_from']=['UNKNOWN']
         self.assertTrue(self.errors())
+    def test_republication_requires_parent(self):
+        self.data['sources'][0]['source_type']='republication'
+        self.assertIn('S1: republication requires a parent source',self.errors())
+    def test_derived_source_keeps_parent_chain(self):
+        child=copy.deepcopy(self.data['sources'][0])
+        child.update(source_id='S2',url='https://example.org/reprint',source_type='republication',
+                     source_chain_id='different-chain',derived_from=['S1'])
+        self.data['sources'].append(child)
+        self.assertIn('S2: derived source must keep the parent source chain',self.errors())
+    def test_reprints_count_as_one_declared_source_chain(self):
+        for number in (2,3):
+            source=copy.deepcopy(self.data['sources'][0])
+            source.update(source_id='S'+str(number),url='https://example.org/reprint-'+str(number),
+                          publisher='Republisher '+str(number),source_type='republication',
+                          derived_from=['S1'])
+            self.data['sources'].append(source)
+            evidence=copy.deepcopy(self.data['evidence'][0])
+            evidence.update(evidence_id='E'+str(number),source_id='S'+str(number))
+            self.data['evidence'].append(evidence)
+            self.data['claims'][0]['evidence_ids'].append('E'+str(number))
+            self.data['answer_items'][0]['evidence_ids'].append('E'+str(number))
+        self.assertEqual(self.errors(),[])
+        summary=relay.source_chain_summary(self.data,'C1')
+        self.assertEqual(len(summary['source_ids']),3)
+        self.assertEqual(summary['source_chain_ids'],['chain1'])
+        self.assertIn('来源文档 3；声明的来源链 1',relay.render(self.data))
     def test_unsafe_url(self):
         self.data['sources'][0]['url']='https://example.org/?token=not-a-real-secret'
         self.assertTrue(self.errors())
@@ -140,6 +166,9 @@ class LedgerTests(unittest.TestCase):
     def test_meaning_is_not_programmatically_certified(self):
         self.data['answer_items'][0]['text']='All users everywhere were affected.'
         self.assertEqual(self.errors(),[])  # Deliberate semantic gap: requires model/human review.
+    def test_institutional_statement_can_still_be_overstated(self):
+        self.data['answer_items'][0]['text']='It is independently proven that five datasets were affected.'
+        self.assertEqual(self.errors(),[])  # Attribution/independence wording is a semantic review task.
     def test_no_fact_without_claim(self):
         self.data['answer_items'][0]['claim_ids']=[]
         self.assertTrue(self.errors())

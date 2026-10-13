@@ -4,6 +4,11 @@
 
 **当前为可运行的演示版本，案例和对照题仍待人工审核。** 不承诺绝对真相、消除幻觉或已证明准确率提高。
 
+## 案例入口
+
+- [CASE-STUDY.md](CASE-STUDY.md)：面向 AI Infrastructure、DevRel 与 Technical Research 的项目案例，说明目标用户、Failure Mode Matrix、可复现验证和当前限制。
+- [公开演示包](cases/hf-demo-public/REVIEW.md)：真实事件公开短引文案例，人工审核状态仍为 pending。
+
 ## 快速开始（macOS）
 
 1. 安装 [Python 3.12 或更新版本](https://www.python.org/downloads/macos/)。安装 [Codex 所在桌面应用](https://learn.chatgpt.com/docs/app)，登录你的账户。Python 脚本不需要 API 密钥；模型调用使用你自己的宿主访问权限。
